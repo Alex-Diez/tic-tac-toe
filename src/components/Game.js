@@ -1,11 +1,13 @@
 import React from "react";
 import Square from "./Square";
+import {Button} from 'react-bootstrap';
 
 export default class Game extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            newGame: true,
             winner: ' ',
             squares: new Array(9).fill(''),
             player: 'X'
@@ -46,6 +48,7 @@ export default class Game extends React.Component {
             }
 
             this.setState({
+                newGame: false,
                 winner: calculateWinner(),
                 squares: squares,
                 player: player === 'X' ? 'O' : 'X'
@@ -57,6 +60,7 @@ export default class Game extends React.Component {
         e.preventDefault();
 
         this.setState({
+            newGame: true,
             winner: ' ',
             squares: new Array(9).fill(''),
             player: 'X'
@@ -74,6 +78,30 @@ export default class Game extends React.Component {
                     value={self.state.squares[index]}
                 />
             )
+        }
+
+        function renderResetButton() {
+            if (self.state.newGame) {
+                return (
+                    <Button
+                        bsStyle="danger"
+                        bsSize="small"
+                        disabled
+                    >
+                        Reset
+                    </Button>
+                )
+            } else {
+                return (
+                    <Button
+                        bsStyle="danger"
+                        bsSize="small"
+                        onClick={self.resetGame}
+                    >
+                        Reset
+                    </Button>
+                )
+            }
         }
 
         return (
@@ -96,12 +124,7 @@ export default class Game extends React.Component {
                     </div>
                     <div className="player-info">Current player: {this.state.player}</div>
                     <div className="game-result">The winner: {this.state.winner}</div>
-                    <button
-                        className="reset-button"
-                        onClick={this.resetGame}
-                    >
-                        Reset
-                    </button>
+                    {renderResetButton()}
                 </div>
             </div>
         )
